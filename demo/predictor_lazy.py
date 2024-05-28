@@ -134,18 +134,19 @@ class VisualizationDemo(object):
             parallel (bool): whether to run the model in different processes from visualization.
                 Useful since the visualization logic can be slow.
         """
+        names = [d.dataset.names[0] for d in cfg.dataloader.train]
         self.metadata = MetadataCatalog.get(
-            "__unused_" + "_".join([d for d in cfg.dataloader.train.dataset.names])
+            "__unused_" + "_".join(names)
         )
         self.metadata.thing_classes = [
             c
-            for d in cfg.dataloader.train.dataset.names
+            for d in names
             for c in MetadataCatalog.get(d).get("thing_classes", default=[])
             + MetadataCatalog.get(d).get("stuff_classes", default=["thing"])[1:]
         ]
         self.metadata.stuff_classes = [
             c
-            for d in cfg.dataloader.train.dataset.names
+            for d in names
             for c in MetadataCatalog.get(d).get("thing_classes", default=[])
             + MetadataCatalog.get(d).get("stuff_classes", default=["thing"])[1:]
         ]
@@ -161,7 +162,7 @@ class VisualizationDemo(object):
         # ]
         # self.metadata.stuff_classes = [
         #     c
-        #     for d in ["coco_2017_train_panoptic_separated"]
+        #     for d in ["coco_2017_train_panoptic_separated"]   
         #     for c in MetadataCatalog.get(d).get("thing_classes", default=[])
         #     + MetadataCatalog.get(d).get("stuff_classes", default=["thing"])[1:]
         # ]
